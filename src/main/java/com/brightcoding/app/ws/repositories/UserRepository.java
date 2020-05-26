@@ -1,5 +1,6 @@
 package com.brightcoding.app.ws.repositories;
 
+
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

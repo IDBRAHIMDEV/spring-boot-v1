@@ -2,8 +2,11 @@ package com.brightcoding.app.ws.controllers;
 
 
 
+
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,21 +51,21 @@ public class UserController {
 	}
 	
 	
-	@GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public List<UserResponse> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "limit", defaultValue = "2") int limit) {
+	@GetMapping(produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+	public List<UserResponse> getAllUsers(@RequestParam(value="page", defaultValue = "1") int page,@RequestParam(value="limit", defaultValue = "4")  int limit) {
 		
-		List<UserResponse> listUsers = new ArrayList<>();
-
+		List<UserResponse> usersResponse = new ArrayList<>();
+		
 		List<UserDto> users = userService.getUsers(page, limit);
-
-		for (UserDto userDto : users) {
-			UserResponse userResponse = new UserResponse();
-			BeanUtils.copyProperties(userDto, userResponse);
-			listUsers.add(userResponse);
+		
+		for(UserDto userDto: users) {
+			UserResponse user = new UserResponse();
+			BeanUtils.copyProperties(userDto, user);
+			
+			usersResponse.add(user);
 		}
-
-		return listUsers;
+		
+		return usersResponse;
 	}
 	
 	
@@ -71,7 +74,7 @@ public class UserController {
 			    consumes={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, 
 			    produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
 			    )
-	public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) throws Exception {
+	public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserRequest userRequest) throws Exception {
 		
 		if(userRequest.getFirstName().isEmpty()) throw new UserException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 		

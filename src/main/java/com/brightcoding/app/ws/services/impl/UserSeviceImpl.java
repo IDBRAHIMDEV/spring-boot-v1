@@ -138,22 +138,24 @@ public class UserSeviceImpl implements UserService {
 	@Override
 	public List<UserDto> getUsers(int page, int limit) {
 		
-		List<UserDto> returnValue = new ArrayList<>();
+		if(page > 0) page = page - 1;
 		
-		if(page>0) page = page-1;
+		List<UserDto> usersDto = new ArrayList<>();
 		
 		Pageable pageableRequest = PageRequest.of(page, limit);
 		
-		Page<UserEntity> usersPage = userRepository.findAll(pageableRequest);
-		List<UserEntity> users = usersPage.getContent();
+		Page<UserEntity> userPage = userRepository.findAll(pageableRequest);
 		
-        for (UserEntity userEntity : users) {
-            UserDto userDto = new UserDto();
-            BeanUtils.copyProperties(userEntity, userDto);
-            returnValue.add(userDto);
-        }
+		List<UserEntity> users = userPage.getContent();
 		
-		return returnValue;
+		for(UserEntity userEntity: users) {
+			UserDto user = new UserDto();
+			BeanUtils.copyProperties(userEntity, user);
+			
+			usersDto.add(user);
+		}
+		
+		return usersDto;
 	}
 
 }
