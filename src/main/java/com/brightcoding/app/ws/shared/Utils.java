@@ -12,7 +12,7 @@ public class Utils {
 	    private final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 		
 	    
-	    public String generateUserId(int length) {
+	    public String generateStringId(int length) {
 	        StringBuilder returnValue = new StringBuilder(length);
 
 	        for (int i = 0; i < length; i++) {

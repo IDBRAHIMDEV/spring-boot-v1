@@ -5,6 +5,7 @@ package com.brightcoding.app.ws.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import com.brightcoding.app.ws.entities.UserEntity;
 import com.brightcoding.app.ws.repositories.UserRepository;
 import com.brightcoding.app.ws.services.UserService;
 import com.brightcoding.app.ws.shared.Utils;
+import com.brightcoding.app.ws.shared.dto.AddressDto;
 import com.brightcoding.app.ws.shared.dto.UserDto;
 
 
@@ -44,19 +46,29 @@ public class UserSeviceImpl implements UserService {
 		
 		if(checkUser != null) throw new RuntimeException("User Alrady Exists !");
 		
-		UserEntity userEntity = new UserEntity();
 		
-		BeanUtils.copyProperties(user, userEntity);
+		
+		for(int i=0; i < user.getAddresses().size(); i++) {
+			
+			AddressDto address = user.getAddresses().get(i);
+			address.setUser(user);
+			address.setAddressId(util.generateStringId(30));
+			user.getAddresses().set(i, address);
+		}
+		
+		
+        ModelMapper modelMapper = new ModelMapper();
+		
+		UserEntity userEntity = modelMapper.map(user, UserEntity.class);
+		
 		
 		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		
-		userEntity.setUserId(util.generateUserId(32));
+		userEntity.setUserId(util.generateStringId(32));
 		
 		UserEntity newUser = userRepository.save(userEntity);
 		
-		UserDto userDto = new UserDto();
-		
-		BeanUtils.copyProperties(newUser, userDto);
+		UserDto userDto =  modelMapper.map(newUser, UserDto.class);
 		
 		return userDto;
 	}
@@ -144,7 +156,7 @@ public class UserSeviceImpl implements UserService {
 		
 		Pageable pageableRequest = PageRequest.of(page, limit);
 		
-		Page<UserEntity> userPage = userRepository.findAll(pageableRequest);
+		Page<UserEntity> userPage = userRepository.findAllUsersWithFirstName(pageableRequest);
 		
 		List<UserEntity> users = userPage.getContent();
 		

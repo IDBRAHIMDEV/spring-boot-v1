@@ -1,9 +1,11 @@
 package com.brightcoding.app.ws.requests;
 
+import java.util.List;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 
@@ -24,7 +26,10 @@ public class UserRequest {
 	@NotNull(message="Ce champ ne doit etre null !")
 	@Size(min=8, message="mot de passe doit avoir au moins 8 caracteres !")
 	@Size(max=12, message="mot de passe doit avoir au max 12 caracteres !")
+	@Pattern(regexp="(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$", message="ce mot de passe doit avoir des lettres en Maj et Minsc et numero")
 	private String password;
+	
+	private List<AddressRequest> addresses;
 	
 	
 	public String getFirstName() {
@@ -50,6 +55,13 @@ public class UserRequest {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public List<AddressRequest> getAddresses() {
+		return addresses;
+	}
+	public void setAddresses(List<AddressRequest> addresses) {
+		this.addresses = addresses;
 	}
 	
 	
