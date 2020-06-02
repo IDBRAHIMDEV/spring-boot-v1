@@ -47,7 +47,6 @@ public class UserSeviceImpl implements UserService {
 		if(checkUser != null) throw new RuntimeException("User Alrady Exists !");
 		
 		
-		
 		for(int i=0; i < user.getAddresses().size(); i++) {
 			
 			AddressDto address = user.getAddresses().get(i);
@@ -55,6 +54,9 @@ public class UserSeviceImpl implements UserService {
 			address.setAddressId(util.generateStringId(30));
 			user.getAddresses().set(i, address);
 		}
+		
+		user.getContact().setContactId(util.generateStringId(30));
+		user.getContact().setUser(user);
 		
         ModelMapper modelMapper = new ModelMapper();
 		
