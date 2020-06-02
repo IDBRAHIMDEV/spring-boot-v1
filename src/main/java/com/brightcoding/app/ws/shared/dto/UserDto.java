@@ -20,7 +20,7 @@ public class UserDto implements Serializable {
 	private String emailVerificationToken;
 	private Boolean emailVerificationStatus = false;
 	private List<AddressDto> addresses;
-	
+
 	public long getId() {
 		return id;
 	}

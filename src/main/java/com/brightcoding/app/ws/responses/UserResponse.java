@@ -10,6 +10,7 @@ public class UserResponse {
 	private String email;
 	private List<AddressResponse> addresses;
 
+
 	public String getUserId() {
 		return userId;
 	}

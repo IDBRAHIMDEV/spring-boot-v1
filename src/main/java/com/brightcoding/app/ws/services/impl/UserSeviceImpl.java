@@ -56,7 +56,6 @@ public class UserSeviceImpl implements UserService {
 			user.getAddresses().set(i, address);
 		}
 		
-		
         ModelMapper modelMapper = new ModelMapper();
 		
 		UserEntity userEntity = modelMapper.map(user, UserEntity.class);
@@ -156,7 +155,7 @@ public class UserSeviceImpl implements UserService {
 		
 		Pageable pageableRequest = PageRequest.of(page, limit);
 		
-		Page<UserEntity> userPage = userRepository.findAllUsersWithFirstName(pageableRequest);
+		Page<UserEntity> userPage = userRepository.findAll(pageableRequest);
 		
 		List<UserEntity> users = userPage.getContent();
 		
