@@ -6,13 +6,16 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 
-@Entity(name="users")
+@Entity
+@Table(name="users")
 public class UserEntity implements Serializable {
 
 	
@@ -44,10 +47,10 @@ public class UserEntity implements Serializable {
 	private Boolean emailVerificationStatus = false;
 	
 	
-	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="user", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<AddressEntity> addresses;
 	
-	@OneToOne(mappedBy="user", cascade=CascadeType.ALL)
+	@OneToOne(mappedBy="user", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	private ContactEntity contact;
 	
 
