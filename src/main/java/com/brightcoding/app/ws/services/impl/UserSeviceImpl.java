@@ -149,7 +149,7 @@ public class UserSeviceImpl implements UserService {
 
 
 	@Override
-	public List<UserDto> getUsers(int page, int limit) {
+	public List<UserDto> getUsers(int page, int limit, String search, int status) {
 		
 		if(page > 0) page = page - 1;
 		
@@ -157,13 +157,23 @@ public class UserSeviceImpl implements UserService {
 		
 		Pageable pageableRequest = PageRequest.of(page, limit);
 		
-		Page<UserEntity> userPage = userRepository.findAll(pageableRequest);
+		Page<UserEntity> userPage;
+		
+		if(search.isEmpty()) {
+			userPage = userRepository.findAllUsers(pageableRequest);
+		}
+		else {
+			
+			userPage = userRepository.findAllUserByCriteria(pageableRequest, search, status);
+		}
+		
 		
 		List<UserEntity> users = userPage.getContent();
 		
 		for(UserEntity userEntity: users) {
-			UserDto user = new UserDto();
-			BeanUtils.copyProperties(userEntity, user);
+			
+			ModelMapper modelMapper = new ModelMapper();	
+			UserDto user = modelMapper.map(userEntity, UserDto.class);
 			
 			usersDto.add(user);
 		}

@@ -53,11 +53,11 @@ public class UserController {
 	
 	
 	@GetMapping(produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam(value="page", defaultValue = "1") int page,@RequestParam(value="limit", defaultValue = "4")  int limit) {
+	public ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam(value="page", defaultValue = "1") int page,@RequestParam(value="limit", defaultValue = "4")  int limit ,@RequestParam(value="search", defaultValue = "") String search,@RequestParam(value="status", defaultValue = "1") int status) {
 		
 		List<UserResponse> usersResponse = new ArrayList<>();
 		
-		List<UserDto> users = userService.getUsers(page, limit);
+		List<UserDto> users = userService.getUsers(page, limit, search, status);
 		
 		for(UserDto userDto: users) {
 			
