@@ -40,6 +40,9 @@ public class UserEntity implements Serializable {
 	@Column(nullable=false, length=120, unique=true)
 	private String email;
 	
+	@Column(nullable=true)
+	private Boolean admin = false;
+	
 	@Column(nullable=false)
 	private String encryptedPassword;
 	
@@ -146,6 +149,14 @@ public class UserEntity implements Serializable {
 
 	public void setContact(ContactEntity contact) {
 		this.contact = contact;
+	}
+
+	public Boolean getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Boolean admin) {
+		this.admin = admin;
 	}
 
 }

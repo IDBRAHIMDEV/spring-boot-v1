@@ -29,6 +29,8 @@ public class UserRequest {
 	@Pattern(regexp="(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$", message="ce mot de passe doit avoir des lettres en Maj et Minsc et numero")
 	private String password;
 	
+	private Boolean admin;
+	
 	private List<AddressRequest> addresses;
 	
 	private ContactRequest contact;
@@ -70,6 +72,12 @@ public class UserRequest {
 	}
 	public void setAddresses(List<AddressRequest> addresses) {
 		this.addresses = addresses;
+	}
+	public Boolean getAdmin() {
+		return admin;
+	}
+	public void setAdmin(Boolean admin) {
+		this.admin = admin;
 	}
 	
 	
