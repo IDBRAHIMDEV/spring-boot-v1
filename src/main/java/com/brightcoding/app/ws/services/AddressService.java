@@ -13,5 +13,4 @@ public interface AddressService {
 	AddressDto getAddress(String addressId);
 	
 	void deleteAddress(String addressId);
-
 }
