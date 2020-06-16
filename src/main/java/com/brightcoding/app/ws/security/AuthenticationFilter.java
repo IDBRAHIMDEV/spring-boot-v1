@@ -58,18 +58,24 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	        
 	        String userName = ((User) auth.getPrincipal()).getUsername(); 
 	        
+            UserService userService = (UserService)SpringApplicationContext.getBean("userSeviceImpl");
+	        
+	        UserDto userDto = userService.getUser(userName);
+	        
 	        String token = Jwts.builder()
 	                .setSubject(userName)
+	                .claim("id", userDto.getUserId())
+	                .claim("name", userDto.getFirstName() + " " + userDto.getLastName())
 	                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
 	                .signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET )
 	                .compact();
 	        
-	        UserService userService = (UserService)SpringApplicationContext.getBean("userSeviceImpl");
-	        
-	        UserDto userDto = userService.getUser(userName);
+	       
 	       
 	        res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
 	        res.addHeader("user_id", userDto.getUserId());
+	        
+	        res.getWriter().write("{\"token\": \"" + token + "\", \"id\": \""+ userDto.getUserId() + "\"}");
 
 	    }  
 }
